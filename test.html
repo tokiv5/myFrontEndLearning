@@ -1,0 +1,50 @@
+<script>
+    /**
+ * @param {number[][]} points
+ * @return {number}
+ */
+var minCostConnectPoints = function(points) {
+    var connectedPoints = new Array();
+    
+
+
+    if (points.length == 2) {
+        return distance(points[0], points[1]);
+    }
+    var tmpDistance = new Array();
+    for (var i = 0; i < points.length; i++){
+        var tmp = points[i];
+        var afterRemove = removeNode(i, points);
+        tmpDistance[i] = minDistanceOneNode(tmp, afterRemove) + minCostConnectPoints(afterRemove);
+    }
+    return Math.min.apply(null, tmpDistance);
+};
+
+function removeNode (index, points){
+    var len = points.length;
+    var newArr = new Array();
+    for (var j = 0; j < index; j++){
+        newArr[j] = points[j]
+    }
+    for (var i = index; i < len - 1; i++){
+        newArr[i] = points[i + 1];
+    }
+    return newArr;
+}
+
+function distance (point1, point2){
+    console.log(point1);
+    //console.log(point1.length);
+    return Math.abs(point1[0] - point2[0]) + Math.abs(point1[1] - point2[1]);
+}
+
+function minDistanceOneNode(p, points){
+    var tmpMin = distance(p, points[0]);
+    for (var i = 1; i < points.length; i++){
+        if (distance(p, points[i]) < tmpMin) tmpMin = distance(p, points[i]);
+    }
+    return tmpMin;
+}
+
+var points = [[0,0],[2,2],[3,10],[5,2],[7,0]];
+</script>
